@@ -1,11 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
-// const MongoClient = require('mongodb').MongoClient;
 const app = express();
-const path = require('path');
-// var jade = require('jade');
-// var template = jade.compile('string of jade', options);
-// var result = template(locals);
 const port = 3000;
 
 app.get('/', (req, res) => {
@@ -13,29 +8,13 @@ app.get('/', (req, res) => {
 });
 
 const wiki = require('./wiki.js');
-const view = require('./view.js');
-
-// Définir le répertoire contenant les modèles ('views')
-app.set('views', path.join(__dirname, 'views'));
-
-// Définir le moteur d'affichage à utiliser, dans ce cas 'jade'.
-app.set('view engine', 'jade');
 
 app.use('/wiki', wiki);
-app.use('/view', view);
 app.use(logger('dev'));
 app.use(express.static('public'));
-app.use(express.static('routes'));
-app.use('/media', express.static('helloworld'));
-
-// Doit être le derneir app.use() à être appelé
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send("Quelque chose s'est cassé !");
-});
 
 // Un exemple de fonction middleware
-let a_middleware_function = function (req, res, next) {
+let a_middleware_function = function(req, res, next) {
   console.log("Inside a_middleware_function");
   next(); // Appelez next() pour qu'Express appelle la fonction middleware suivante dans la chaîne.
 }
@@ -52,17 +31,6 @@ app.get('/middleware', a_middleware_function);
 app.listen(port, () => {
   console.log(`Application exemple à l'écoute sur le port ${port}!`)
 });
-
-// MongoClient.connect('mongodb://localhost:27017/animals', function (err, client) {
-//   if (err) throw err;
-
-//   let db = client.db('animals');
-//   db.collection('mammals').find().toArray(function (err, result) {
-//     if (err) throw err;
-//     console.log(result);
-//     client.close();
-//   });
-// });
 
 var square = require('./square');
 console.log("L'aire d'un carré dont la largeur est de 4 est la suivante: " + square.area(4));
